@@ -32,7 +32,7 @@ public class Auxiliares {
 
         return Arvore;
     }
-
+    
     static public ArrayList<String> PalavrasNaoEncontradasDicionarioABB(BinaryTree dicionario, String caminhoLivro) {
 
         ArrayList<String> palavras = new ArrayList<>();
@@ -48,7 +48,7 @@ public class Auxiliares {
             while (linha != null) {
                 listaPalavras = linha.split(" ");
                 for (String Palavra : listaPalavras) {
-                    no = dicionario.busca(linha);
+                    no = dicionario.busca(Palavra);
                     if (no == null) {
                         palavras.add(Palavra);
                     }

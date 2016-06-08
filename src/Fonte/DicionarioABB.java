@@ -11,4 +11,8 @@ public class DicionarioABB {
         Arvore = Auxiliares.RetornaArvorePorArquivo(caminho);
     }
     
+     public BinaryTree getDicionarioABB(){
+         return this.Arvore;
+     }
+    
 }
