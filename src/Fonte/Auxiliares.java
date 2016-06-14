@@ -1,9 +1,11 @@
 package Fonte;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Auxiliares {
 
@@ -13,17 +15,22 @@ public class Auxiliares {
         BinaryTree Arvore = new BinaryTree();
         try {
 
-            FileReader arq = new FileReader(caminhoDicionario);
-            BufferedReader lerArq = new BufferedReader(arq);
-            String linha = lerArq.readLine();
-            while (linha != null) {
-                palavras.add(linha);
-                //System.out.println(linha);
-                Arvore.inserir(linha);
-                linha = lerArq.readLine();
-            }
+            File diretorio = new File(caminhoDicionario);
+            File fList[] = diretorio.listFiles();
 
-            arq.close();
+            for (int i = 0; i < fList.length; i++) {
+
+                FileReader arq = new FileReader(fList[i].getAbsolutePath() );
+                BufferedReader lerArq = new BufferedReader(arq);
+                String linha = lerArq.readLine();
+                while (linha != null) {
+                    palavras.add(linha);
+                    Arvore.inserir(linha);
+                    linha = lerArq.readLine();
+                }
+
+                arq.close();
+            }
 
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",
@@ -32,7 +39,7 @@ public class Auxiliares {
 
         return Arvore;
     }
-    
+
     static public ArrayList<String> PalavrasNaoEncontradasDicionarioABB(BinaryTree dicionario, String caminhoLivro) {
 
         ArrayList<String> palavras = new ArrayList<>();
