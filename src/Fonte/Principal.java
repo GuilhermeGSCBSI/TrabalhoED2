@@ -7,10 +7,10 @@ public class Principal {
     
     public static void main(String[] args) {
      
-        DicionarioABB dicionario = new DicionarioABB("C:\\Dicionario");
-        //System.out.println(dicionario.getDicionarioABB().getQtdNode());
-        ArrayList<String> palavras = Auxiliares.PalavrasNaoEncontradasDicionarioABB(dicionario.getDicionarioABB(),"C:\\livro1.txt");
-           
+        DicionarioRB dicionario = new DicionarioRB("C:\\Dicionario");
+       System.out.println("Teste");
+        ArrayList<String> palavras = Auxiliares.PalavrasNaoEncontradasDicionarioRB(dicionario.getDicionarioRB(), "C:\\livro1.txt");
+           System.out.println("Teste");    
     }
     
 }
