@@ -33,7 +33,7 @@ public class Auxiliares {
                     }
                 }
 
-                linha = lerArq.readLine();
+                linha = lerArq.readLine(); 
             }
             arq.close();
 
