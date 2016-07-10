@@ -44,13 +44,13 @@ public class ArvoreVP {
         return x.tamanho;
     }
 
-    // Método publico retorna altura da Raiz.
-    public int size() {
+    // Método publico retorna tamanho da Raiz.
+    public int tamanho() {
         return tamanho(raiz);
     }
 
    // Retorna se arvore está vazia.
-    public boolean isEmpty() {
+    public boolean vazia() {
         return raiz == null;
     }
 
@@ -78,7 +78,7 @@ public class ArvoreVP {
     }
 
     // Método publico boleano, retorna se a chave está contida na arvore ou não.
-    public boolean contains(String chave) {
+    public boolean contido(String chave) {
         return busca(chave) != null;
     }
 
