@@ -109,7 +109,8 @@ public class Auxiliares {
                     for (String Palavra : listaPalavras) {
                         if (!Palavra.equals("")) {
                             PalavraFormatada = Palavra.replaceAll("[^a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]", "");
-                            tabela.insere(PalavraFormatada.toLowerCase());
+                            //tabela.insere(PalavraFormatada.toLowerCase());
+                            tabela.insereDH(PalavraFormatada.toLowerCase());
                         }
                     }
                     linha = lerArq.readLine();
@@ -141,7 +142,8 @@ public class Auxiliares {
                 for (String palavra : listaPalavras) {
                     palavraFormatada = palavra.replaceAll("[^a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]", "");
                     if (!palavraFormatada.equals("")) {
-                        if (!dicionario.contido(palavraFormatada.toLowerCase())) {
+                        //if (!dicionario.contido(palavraFormatada.toLowerCase())) {
+                        if (!dicionario.contidoDH(palavraFormatada.toLowerCase())) {
                             palavras.add(palavraFormatada);
                         }
                     }
@@ -158,6 +160,27 @@ public class Auxiliares {
 
         return palavras;
     }
+
+    static boolean isPrime(int number) {
+
+        if (number % 2 == 0) {
+            return false;
+        }
+
+        for (int i = 3; i * i <= number; i += 2) {
+
+            if (number % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static int getPreviousPrime(int maxNumberToCheck) {
+        for (int i = maxNumberToCheck; true; i--) {
+            if (isPrime(i)) {
+                return i;
+            }
+        }
+    }
 }
-
-

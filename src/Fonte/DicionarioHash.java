@@ -4,6 +4,7 @@ public class DicionarioHash {
 
     static String[] dicionario;
     static int tamanhoTabela;
+    static int menorPrimo;
 
     public DicionarioHash(String caminho, int tamanhoTabela) {
         dicionario = new String[tamanhoTabela];
@@ -16,6 +17,8 @@ public class DicionarioHash {
         for (int i = 0; i < tamanhoTabela; i++) {
              dicionario[i] = "";
         }
+        
+        this.menorPrimo = Auxiliares.getPreviousPrime(tamanhoTabela);
     }
 
     public String[] getDicionario() {
@@ -64,5 +67,48 @@ public class DicionarioHash {
         }
         return true;
 
+    }
+    
+    //* Double Hash *//
+    public static int hash1(String s) {
+        int hashcode = s.hashCode();
+        int res = (hashcode & 0x7FFFFFFF) % tamanhoTabela;
+        return res;
+    }
+
+    public static int hash2(String s) {
+        int hash1 = hash1(s);
+        int f1 = menorPrimo - ((s.hashCode() & 0x7FFFFFFF) % menorPrimo);
+        int resultado = (hash1 + f1) % tamanhoTabela;
+        return resultado;
+    }
+
+    public static void insereDH(String valor) {
+        int i = hash1(valor);
+        if (dicionario[i].equals("")) {
+            dicionario[i] = valor;
+        } else {
+            i = hash2(valor);
+             if(dicionario[i].equals("")) 
+                 dicionario[i] = valor;
+             else {
+                 //help
+             }               
+        }
+        return;
+    }
+
+    public static boolean contidoDH(String s) {
+        int i = hash1(s);
+
+        if (dicionario[i].equals(s)) {
+            return true;
+        } else {
+            i = hash2(s);
+            if (dicionario[i].equals(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
