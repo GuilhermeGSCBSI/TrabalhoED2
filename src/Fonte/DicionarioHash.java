@@ -17,7 +17,7 @@ public class DicionarioHash {
         for (int i = 0; i < tamanhoTabela; i++) {
              dicionario[i] = "";
         }
-        
+
         this.menorPrimo = Auxiliares.getPreviousPrime(tamanhoTabela);
     }
 
@@ -68,7 +68,7 @@ public class DicionarioHash {
         return true;
 
     }
-    
+
     //* Double Hash *//
     public static int hash1(String s) {
         int hashcode = s.hashCode();
@@ -85,22 +85,24 @@ public class DicionarioHash {
 
     public static void insereDH(String valor) {
         int i = hash1(valor);
-        if (dicionario[i].equals("")) {
-            dicionario[i] = valor;
-        } else {
-            i = hash2(valor);
-             if(dicionario[i].equals("")) 
-                 dicionario[i] = valor;
-             else {
-                 //help
-             }               
-        }
-        return;
+        int cont = 0;
+         while (!dicionario[i].equals("")) {
+            if (!dicionario[i].equals(valor)) {
+                i = hash2(valor);
+            }
+            else
+            {
+                return;//valor já existe na tabela
+            }
+            if (++cont == dicionario.length) {
+                return;//tabela cheia
+            }            
+         }
+        dicionario[i] = valor;
     }
 
     public static boolean contidoDH(String s) {
         int i = hash1(s);
-
         if (dicionario[i].equals(s)) {
             return true;
         } else {

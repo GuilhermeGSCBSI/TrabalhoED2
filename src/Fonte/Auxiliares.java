@@ -134,7 +134,7 @@ public class Auxiliares {
 
             FileReader arq = new FileReader(caminhoLivro);
             BufferedReader lerArq = new BufferedReader(arq);
-            String linha = lerArq.readLine();;
+            String linha = lerArq.readLine();
             String palavraFormatada = "";
 
             while (linha != null) {
