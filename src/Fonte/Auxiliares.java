@@ -2,6 +2,7 @@ package Fonte;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,33 +10,37 @@ import java.util.ArrayList;
 
 public class Auxiliares {
 
-    static public ArrayList<String> PalavrasNaoEncontradasDicionarioRB(ArvoreVP dicionario, String caminhoLivro) {
+    static public ArrayList<String> PalavrasNaoEncontradasDicionarioRB(ArvoreVP dicionario, String caminhoLivros) throws FileNotFoundException {
 
         ArrayList<String> palavras = new ArrayList<>();
         String[] listaPalavras;
 
         try {
+            File diretorio = new File(caminhoLivros);
+            File fList[] = diretorio.listFiles();
 
-            FileReader arq = new FileReader(caminhoLivro);
-            BufferedReader lerArq = new BufferedReader(arq);
-            String linha = lerArq.readLine();;
-            String palavraFormatada = "";
+            for (int i = 0; i < fList.length; i++) {
 
-            while (linha != null) {
-                listaPalavras = linha.split(" ");
-                for (String palavra : listaPalavras) {
-                    palavraFormatada = palavra.replaceAll("[^a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]", "");
-                    if (!palavraFormatada.equals("")) {
-                        if (!dicionario.contido(palavraFormatada)) {
-                            palavras.add(palavraFormatada);
+                FileReader arq = new FileReader(fList[i].getAbsolutePath());
+                BufferedReader lerArq = new BufferedReader(arq);
+                String linha = lerArq.readLine();
+                String palavraFormatada = "";
+
+                while (linha != null) {
+                    listaPalavras = linha.split(" ");
+                    for (String palavra : listaPalavras) {
+                        palavraFormatada = palavra.replaceAll("[^a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]", "");
+                        if (!palavraFormatada.equals("")) {
+                            if (!dicionario.contido(palavraFormatada)) {
+                                palavras.add(palavraFormatada);
+                            }
                         }
                     }
+
+                    linha = lerArq.readLine();
                 }
-
-                linha = lerArq.readLine();
+                arq.close();
             }
-            arq.close();
-
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",
                     e.getMessage());
@@ -97,6 +102,7 @@ public class Auxiliares {
             File diretorio = new File(caminhoDicionario);
             File fList[] = diretorio.listFiles();
             String[] listaPalavras;
+            int colisoes = 0;
 
             for (int i = 0; i < fList.length; i++) {
 
@@ -104,18 +110,106 @@ public class Auxiliares {
                 BufferedReader lerArq = new BufferedReader(arq);
                 String linha = lerArq.readLine();
                 String PalavraFormatada;
+
                 while (linha != null) {
                     listaPalavras = linha.split(" ");
                     for (String Palavra : listaPalavras) {
                         if (!Palavra.equals("")) {
                             PalavraFormatada = Palavra.replaceAll("[^a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]", "");
-                            tabela.insere(PalavraFormatada.toLowerCase());
+                            colisoes += tabela.insere(PalavraFormatada.toLowerCase());
                         }
                     }
                     linha = lerArq.readLine();
                 }
                 arq.close();
+
             }
+
+            System.out.println("Numero de Colisoes: " + colisoes);
+
+        } catch (IOException e) {
+            System.err.printf("Erro na abertura do arquivo: %s.\n",
+                    e.getMessage());
+        }
+
+        return tabela.getDicionario();
+    }
+    
+    static String[] RetornaHash2PorArquivo(String caminhoDicionario, int tamanhoTabela) {
+
+        DicionarioHash2 tabela = new DicionarioHash2(tamanhoTabela);
+
+        try {
+
+            File diretorio = new File(caminhoDicionario);
+            File fList[] = diretorio.listFiles();
+            String[] listaPalavras;
+            int colisoes = 0;
+
+            for (int i = 0; i < fList.length; i++) {
+
+                FileReader arq = new FileReader(fList[i].getAbsolutePath());
+                BufferedReader lerArq = new BufferedReader(arq);
+                String linha = lerArq.readLine();
+                String PalavraFormatada;
+
+                while (linha != null) {
+                    listaPalavras = linha.split(" ");
+                    for (String Palavra : listaPalavras) {
+                        if (!Palavra.equals("")) {
+                            PalavraFormatada = Palavra.replaceAll("[^a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]", "");
+                            colisoes += tabela.insere(PalavraFormatada.toLowerCase());
+                        }
+                    }
+                    linha = lerArq.readLine();
+                }
+                arq.close();
+
+            }
+
+            System.out.println("Numero de Colisoes: " + colisoes);
+
+        } catch (IOException e) {
+            System.err.printf("Erro na abertura do arquivo: %s.\n",
+                    e.getMessage());
+        }
+
+        return tabela.getDicionario();
+    }
+    
+    static String[] RetornaHash3PorArquivo(String caminhoDicionario, int tamanhoTabela) {
+
+        DicionarioHash3 tabela = new DicionarioHash3(tamanhoTabela);
+
+        try {
+
+            File diretorio = new File(caminhoDicionario);
+            File fList[] = diretorio.listFiles();
+            String[] listaPalavras;
+            int colisoes = 0;
+
+            for (int i = 0; i < fList.length; i++) {
+
+                FileReader arq = new FileReader(fList[i].getAbsolutePath());
+                BufferedReader lerArq = new BufferedReader(arq);
+                String linha = lerArq.readLine();
+                String PalavraFormatada;
+
+                while (linha != null) {
+                    listaPalavras = linha.split(" ");
+                    for (String Palavra : listaPalavras) {
+                        if (!Palavra.equals("")) {
+                            PalavraFormatada = Palavra.replaceAll("[^a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]", "");
+                            colisoes += tabela.insere(PalavraFormatada.toLowerCase());
+                        }
+                    }
+                    linha = lerArq.readLine();
+                }
+                arq.close();
+
+            }
+
+            System.out.println("Numero de Colisoes: " + colisoes);
 
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",
@@ -125,32 +219,37 @@ public class Auxiliares {
         return tabela.getDicionario();
     }
 
-    static ArrayList<String> PalavrasNaoEncontradasDicionarioHash(DicionarioHash dicionario, String caminhoLivro) {
+    static ArrayList<String> PalavrasNaoEncontradasDicionarioHash(DicionarioHash dicionario, String caminhoLivros) {
         ArrayList<String> palavras = new ArrayList<>();
         String[] listaPalavras;
 
         try {
 
-            FileReader arq = new FileReader(caminhoLivro);
-            BufferedReader lerArq = new BufferedReader(arq);
-            String linha = lerArq.readLine();;
-            String palavraFormatada = "";
+            File diretorio = new File(caminhoLivros);
+            File fList[] = diretorio.listFiles();
 
-            while (linha != null) {
-                listaPalavras = linha.split(" ");
-                for (String palavra : listaPalavras) {
-                    palavraFormatada = palavra.replaceAll("[^a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]", "");
-                    if (!palavraFormatada.equals("")) {
-                        if (!dicionario.contido(palavraFormatada.toLowerCase())) {
-                            palavras.add(palavraFormatada);
+            for (int i = 0; i < fList.length; i++) {
+
+                FileReader arq = new FileReader(fList[i].getAbsolutePath());
+                BufferedReader lerArq = new BufferedReader(arq);
+                String linha = lerArq.readLine();
+                String palavraFormatada = "";
+
+                while (linha != null) {
+                    listaPalavras = linha.split(" ");
+                    for (String palavra : listaPalavras) {
+                        palavraFormatada = palavra.replaceAll("[^a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]", "");
+                        if (!palavraFormatada.equals("")) {
+                            if (!dicionario.contido(palavraFormatada.toLowerCase())) {
+                                palavras.add(palavraFormatada);
+                            }
                         }
                     }
+
+                    linha = lerArq.readLine();
                 }
-
-                linha = lerArq.readLine();
+                arq.close();
             }
-            arq.close();
-
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",
                     e.getMessage());
@@ -158,6 +257,83 @@ public class Auxiliares {
 
         return palavras;
     }
+
+    static ArrayList<String> PalavrasNaoEncontradasDicionarioHash2(DicionarioHash2 dicionario, String caminhoLivros) {
+        ArrayList<String> palavras = new ArrayList<>();
+        String[] listaPalavras;
+
+        try {
+
+            File diretorio = new File(caminhoLivros);
+            File fList[] = diretorio.listFiles();
+
+            for (int i = 0; i < fList.length; i++) {
+
+                FileReader arq = new FileReader(fList[i].getAbsolutePath());
+                BufferedReader lerArq = new BufferedReader(arq);
+                String linha = lerArq.readLine();
+                String palavraFormatada = "";
+
+                while (linha != null) {
+                    listaPalavras = linha.split(" ");
+                    for (String palavra : listaPalavras) {
+                        palavraFormatada = palavra.replaceAll("[^a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]", "");
+                        if (!palavraFormatada.equals("")) {
+                            if (!dicionario.contido(palavraFormatada.toLowerCase())) {
+                                palavras.add(palavraFormatada);
+                            }
+                        }
+                    }
+
+                    linha = lerArq.readLine();
+                }
+                arq.close();
+            }
+        } catch (IOException e) {
+            System.err.printf("Erro na abertura do arquivo: %s.\n",
+                    e.getMessage());
+        }
+
+        return palavras;
+    }
+
+    static ArrayList<String> PalavrasNaoEncontradasDicionarioHash3(DicionarioHash3 dicionario, String caminhoLivros) {
+        ArrayList<String> palavras = new ArrayList<>();
+        String[] listaPalavras;
+
+        try {
+
+            File diretorio = new File(caminhoLivros);
+            File fList[] = diretorio.listFiles();
+
+            for (int i = 0; i < fList.length; i++) {
+
+                FileReader arq = new FileReader(fList[i].getAbsolutePath());
+                BufferedReader lerArq = new BufferedReader(arq);
+                String linha = lerArq.readLine();
+                String palavraFormatada = "";
+
+                while (linha != null) {
+                    listaPalavras = linha.split(" ");
+                    for (String palavra : listaPalavras) {
+                        palavraFormatada = palavra.replaceAll("[^a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]", "");
+                        if (!palavraFormatada.equals("")) {
+                            if (!dicionario.contido(palavraFormatada.toLowerCase())) {
+                                palavras.add(palavraFormatada);
+                            }
+                        }
+                    }
+
+                    linha = lerArq.readLine();
+                }
+                arq.close();
+            }
+        } catch (IOException e) {
+            System.err.printf("Erro na abertura do arquivo: %s.\n",
+                    e.getMessage());
+        }
+
+        return palavras;
+    }
+
 }
-
-

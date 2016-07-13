@@ -1,16 +1,16 @@
 package Fonte;
 
-public class DicionarioHash {
+public class DicionarioHash3 {
 
     static String[] dicionario;
     static int tamanhoTabela;
 
-    public DicionarioHash(String caminho, int tamanhoTabela) {
+    public DicionarioHash3(String caminho, int tamanhoTabela) {
         dicionario = new String[tamanhoTabela];
-        dicionario = Auxiliares.RetornaHashPorArquivo(caminho, tamanhoTabela);
+        dicionario = Auxiliares.RetornaHash3PorArquivo(caminho, tamanhoTabela);
     }
 
-    DicionarioHash(int tamanhoTabela) {
+    DicionarioHash3(int tamanhoTabela) {
         dicionario = new String[tamanhoTabela];
         this.tamanhoTabela = tamanhoTabela;
         for (int i = 0; i < tamanhoTabela; i++) {
@@ -23,18 +23,7 @@ public class DicionarioHash {
     }
 
     public static int hash(String s) {
-        int hash, i;
-        for (hash = i = 0; i < s.length(); ++i) {
-            hash += s.charAt(i);
-            hash += (hash << 10);
-            hash ^= (hash >> 6);
-        }
-        hash += (hash << 3);
-        hash ^= (hash >> 11);
-        hash += (hash << 15);
-        return Math.abs(hash) % tamanhoTabela;
-        
-
+        return Math.abs(s.hashCode() % tamanhoTabela);
     }
 
     public static int insere(String valor) {
